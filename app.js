@@ -26,9 +26,9 @@ fs.readFile(__dirname + "/public/css/style.css", (err) => {
   }
 });
 
-db.run(
-  "CREATE TABLE IF NOT EXISTS pets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER, species TEXT, owner TEXT)"
-);
+// db.run(
+//   "CREATE TABLE IF NOT EXISTS pets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER, species TEXT, owner TEXT)"
+// );
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 app.post("/add", (req, res) => {
   db.serialize(() => {
     db.run(
-      "INSERT INTO pets( name, age, species, owner) VALUES (?,?,?,?)",
+      "INSERT INTO pets (name, age, species, owner) VALUES (?,?,?,?)",
       [req.body.name, req.body.age, req.body.species, req.body.owner],
       (err) => {
         if (err) {
@@ -54,19 +54,38 @@ app.post("/add", (req, res) => {
 
 // VIEW
 app.post("/view", (req, res) => {
+  let data = [];
   db.serialize(() => {
     db.each(
-      "SELECT  name NAME, age AGE, species SPECIES, owner OWNER FROM pets WHERE name = ?;",
-      [req.body.name],
+      "SELECT * FROM pets WHERE name = ? OR species = ?;",
+      [req.body.name, req.body.species],
       (err, row) => {
         if (err) {
           res.send("Error ocourred while displaying");
           return res.json(err);
         }
+        data.push(row);
+        console.log(data);
+      },
+      () => {
+        res.send(data);
+      }
+    );
+  });
+});
 
-        res.send(` ${row.NAME} ${row.AGE} ${row.SPECIES} ${row.OWNER}`);
-        console.log("Displayed successfully");
-        res.end();
+// SHOW ALL PETS
+app.get("/show", (req, res) => {
+  let data = [];
+  db.serialize(() => {
+    db.each(
+      "SELECT * FROM pets;",
+      (err, row) => {
+        console.log(row.name);
+        data.push(row);
+      },
+      () => {
+        res.send(data);
       }
     );
   });
@@ -85,7 +104,7 @@ app.post("/update", (req, res) => {
         }
         res.send("Update successfull");
         console.log("Update successfull");
-        res.end();
+        // res.end();
       }
     );
   });
@@ -99,6 +118,7 @@ app.post("/delete", function (req, res) {
         res.send("Error occurred while deleting");
         return console.error(err.message);
       }
+
       res.send("Pet deleted");
       console.log("Pet deleted");
     });

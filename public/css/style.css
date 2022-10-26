@@ -66,6 +66,18 @@ input {
   padding: 0.2rem;
 }
 
+.radio-btns {
+  margin-top: 1rem;
+
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+}
+
+.radio {
+  background-color: #963def;
+}
+
 p {
   font-weight: bold;
   text-align: center;

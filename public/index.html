@@ -34,20 +34,24 @@
         </fieldset>
       </form>
 
-      <form action="/view" method="POST">
+      <form action="/view" method="post">
         <fieldset>
-          <h3>View a pet</h3>
+          <h3>View by name or species</h3>
+          <br />
+          <label for="name">Pet species</label>
+          <input type="text" id="species" name="species" />
           <br />
           <label for="name">Pet name</label>
-          <input type="text" id="name" name="name" required />
+          <input type="text" id="name" name="name" />
           <br /><br />
-          <button type="reset">Reset</button>
+
           <button type="submit">Submit</button>
           <br /><br />
         </fieldset>
       </form>
 
-      <form action="/update" method="POST">
+      <!-- UPDATE -->
+      <form action="/update" method="post">
         <fieldset>
           <h3>Update a Pet</h3>
           <br />
@@ -68,7 +72,6 @@
           <label>Pet name</label>
           <input type="text" id="name" name="name" required />
           <br /><br />
-          <button type="reset">Reset</button>
           <button type="submit">Submit</button>
           <br /><br />
         </fieldset>

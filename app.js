@@ -110,10 +110,10 @@ app.post("/update", (req, res) => {
   });
 });
 
-// DELETE
-app.post("/delete", function (req, res) {
+// DELETE BY NAME
+app.post("/delete", (req, res) => {
   db.serialize(() => {
-    db.run("DELETE FROM pets WHERE name = ?", req.body.name, function (err) {
+    db.run("DELETE FROM pets WHERE name = ?", req.body.name, (err) => {
       if (err) {
         res.send("Error occurred while deleting");
         return console.error(err.message);
